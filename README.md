@@ -24,7 +24,7 @@ The desktop edition is a native Electron app. Each of the 17 checkers gets its o
 
 Download `SOSUKE-Checker-1.1.0-universal.dmg`, open it, and drag **SOSUKE Checker** into **Applications**. The DMG is universal — it runs natively on both Apple Silicon and Intel Macs.
 
-The build is **not signed with an Apple Developer certificate**, so Gatekeeper will ask for confirmation the first time:
+The app is **ad-hoc signed** so it runs on Apple Silicon, but it is **not notarized with an Apple Developer ID**, so Gatekeeper will ask for confirmation the first time:
 
 1. Right-click (or Control-click) **SOSUKE Checker** in Applications and choose **Open**.
 2. Or open **System Settings → Privacy & Security** and choose **Open Anyway**.
@@ -75,11 +75,11 @@ npm run dist:mac   # macOS: universal DMG + ZIP in release/
 npm run dist:win   # Windows: portable .exe in release/
 ```
 
-`npm run dist:mac` must run on macOS. It uses `hdiutil`, `sips` and `iconutil`, which do not exist on Windows or Linux. The GitHub Actions workflow in [`.github/workflows/build-macos.yml`](.github/workflows/build-macos.yml) does it for you on a `macos-latest` runner: open the **Actions** tab, pick **Build macOS DMG**, and run the workflow. The universal `.dmg` and `.zip` come out as downloadable artifacts after about 5–10 minutes.
+`npm run dist:mac` must run on macOS. It uses `hdiutil`, `sips` and `iconutil`, which do not exist on Windows or Linux. To produce the same ad-hoc signed build locally, run `npm run dist:mac -- -c.mac.identity=-`. The GitHub Actions workflow in [`.github/workflows/build-macos.yml`](.github/workflows/build-macos.yml) does it for you on a `macos-latest` runner: open the **Actions** tab, pick **Build macOS DMG**, and run the workflow. The universal `.dmg` and `.zip` come out as downloadable artifacts after about 5–10 minutes.
 
 ### Optional: sign and notarize
 
-The default build is unsigned. If you have an Apple Developer account, add these repository secrets and re-run the workflow; electron-builder will sign with the hardened runtime and notarize automatically:
+The default build is ad-hoc signed and not notarized. If you have an Apple Developer account, add these repository secrets and re-run the workflow; electron-builder will sign with the hardened runtime and notarize automatically:
 
 | Secret | What it is |
 |---|---|

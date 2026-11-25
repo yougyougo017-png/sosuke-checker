@@ -1,0 +1,99 @@
+{
+  "name": "sosuke-checker",
+  "version": "1.1.0",
+  "private": true,
+  "description": "SOSUKE Checker — live username availability across 17 platforms. Desktop app and local web app. Built by sosuke.",
+  "author": "sosuke",
+  "license": "MIT",
+  "main": "electron/main.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "app": "electron .",
+    "app:dev": "electron . --dev",
+    "dist:dir": "electron-builder --dir",
+    "dist:mac": "electron-builder --mac",
+    "dist:win": "electron-builder --win portable"
+  },
+  "devDependencies": {
+    "electron": "45.5.0",
+    "electron-builder": "26.18.0"
+  },
+  "build": {
+    "appId": "com.sosuke.checker",
+    "productName": "SOSUKE Checker",
+    "copyright": "Copyright © 2026 sosuke",
+    "asar": true,
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "electron/**/*",
+      "lib/**/*",
+      "package.json",
+      "!**/*.map",
+      "!**/.DS_Store"
+    ],
+    "artifactName": "SOSUKE-Checker-${version}-${arch}.${ext}",
+    "mac": {
+      "category": "public.app-category.utilities",
+      "icon": "build/icon.png",
+      "darkModeSupport": true,
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["universal"]
+        },
+        {
+          "target": "zip",
+          "arch": ["universal"]
+        }
+      ]
+    },
+    "dmg": {
+      "title": "SOSUKE Checker ${version}",
+      "background": "build/dmg-background.png",
+      "window": {
+        "width": 660,
+        "height": 420,
+        "x": 240,
+        "y": 160
+      },
+      "iconSize": 112,
+      "iconTextSize": 13,
+      "contents": [
+        {
+          "x": 170,
+          "y": 208,
+          "type": "file"
+        },
+        {
+          "x": 490,
+          "y": 208,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "build/icon.png"
+    },
+    "portable": {
+      "artifactName": "SOSUKE-Checker-${version}-portable.${ext}"
+    }
+  }
+}

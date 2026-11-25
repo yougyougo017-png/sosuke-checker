@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline'; font-src 'self'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <title>SOSUKE Checker</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="ambient" aria-hidden="true">
+      <span class="ambient-glow ambient-a"></span>
+      <span class="ambient-glow ambient-b"></span>
+      <span class="ambient-scan"></span>
+    </div>
+
+    <div class="app">
+      <header class="titlebar" id="titlebar">
+        <div class="titlebar-left">
+          <span class="tb-seal" aria-hidden="true">S</span>
+          <span class="tb-word">SOSUKE<span class="slash">/</span>CHECKER</span>
+          <span class="tb-ver" id="titleVersion">v1.1.0</span>
+        </div>
+        <div class="titlebar-drag" aria-hidden="true"></div>
+        <div class="titlebar-right">
+          <span class="live-pill"><i></i><span id="liveCount">17</span> LIVE TARGETS</span>
+          <span class="tb-made">built by <b>sosuke</b></span>
+          <button class="tb-icon" id="helpBtn" type="button" aria-label="Open the field manual" title="Field manual">?</button>
+          <div class="win-controls" id="winControls" hidden>
+            <button type="button" data-window="minimize" aria-label="Minimize">
+              <svg viewBox="0 0 10 10" aria-hidden="true"><path d="M2 5h6" /></svg>
+            </button>
+            <button type="button" data-window="maximize" id="winMax" aria-label="Maximize">
+              <svg viewBox="0 0 10 10" aria-hidden="true"><rect x="2.2" y="2.2" width="5.6" height="5.6" rx=".4" /></svg>
+            </button>
+            <button type="button" data-window="close" class="win-close" aria-label="Close">
+              <svg viewBox="0 0 10 10" aria-hidden="true"><path d="m2.4 2.4 5.2 5.2M7.6 2.4 2.4 7.6" /></svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div class="workspace">
+        <aside class="sidebar">
+          <nav class="side-nav" id="sideNav" aria-label="Checkers">
+            <button class="side-tab side-all is-active" data-tab="all" type="button">
+              <span class="tab-ico tab-ico-all" aria-hidden="true">
+                <svg viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1" /><rect x="9" y="2" width="5" height="5" rx="1" /><rect x="2" y="9" width="5" height="5" rx="1" /><rect x="9" y="9" width="5" height="5" rx="1" /></svg>
+              </span>
+              <span class="tab-copy"><strong>All checkers</strong><small>Full sweep</small></span>
+              <span class="tab-badge">17</span>
+            </button>
+            <button class="side-tab side-forge" data-tab="generator" type="button">
+              <span class="tab-ico tab-ico-forge" aria-hidden="true">
+                <svg viewBox="0 0 16 16"><path d="M8 1.4 9.8 6.2 14.6 8 9.8 9.8 8 14.6 6.2 9.8 1.4 8 6.2 6.2Z" /></svg>
+              </span>
+              <span class="tab-copy"><strong>Name forge</strong><small>Auto-generate</small></span>
+              <span class="tab-badge">AUTO</span>
+            </button>
+          </nav>
+          <div class="side-foot">
+            <button class="credit-button" id="creditsBtn" type="button">
+              <span class="credit-seal" aria-hidden="true">S</span>
+              <span class="credit-copy"><small>CREDITS // 01</small><strong>built by sosuke</strong></span>
+            </button>
+            <p class="side-meta">v<span id="sideVersion">1.1.0</span> · <span id="sidePlatform">DESKTOP</span> · © 2026</p>
+          </div>
+        </aside>
+
+        <main class="stage" id="stage">
+          <section class="view is-active" id="viewAll">
+            <div class="view-scroll" id="allScroll">
+              <header class="hero">
+                <div class="hero-copy">
+                  <p class="eyebrow">CONTROL ROOM <span class="rule"></span> ALL TARGETS</p>
+                  <h1>
+                    <span>ONE NAME<span class="dot">.</span></span>
+                    <span class="outline">EVERYWHERE<span class="dot">.</span></span>
+                  </h1>
+                  <p class="hero-sub">
+                    Seventeen live checkers, one handle. <b>If it's open, you'll know in seconds.</b>
+                    No logins. No guesswork.
+                  </p>
+                </div>
+                <div class="hero-sun" aria-hidden="true">
+                  <span class="sun-ring ring-1"></span>
+                  <span class="sun-ring ring-2"></span>
+                  <span class="sun-core"></span>
+                  <span class="sun-jp">ススケ</span>
+                </div>
+              </header>
+
+              <form class="sweep-bar" id="allForm" autocomplete="off" novalidate>
+                <span class="sweep-at" aria-hidden="true">@</span>
+                <label class="sr-only" for="allInput">Username to check across all platforms</label>
+                <input
+                  id="allInput"
+                  class="sweep-input"
+                  type="text"
+                  maxlength="64"
+                  placeholder="type a handle"
+                  spellcheck="false"
+                  autocapitalize="none"
+                  autocomplete="off"
+                  aria-describedby="allHint"
+                />
+                <span class="sweep-hint" id="allHint"><kbd>↵</kbd> sweep</span>
+                <button class="primary-btn" id="allBtn" type="submit">
+                  <span id="allBtnLabel">SWEEP ALL</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13" /><path d="m13 6 6 6-6 6" /></svg>
+                </button>
+              </form>
+
+              <section class="verdict" id="verdict" aria-live="polite">
+                <div class="ring" id="scoreRing" style="--pct: 0">
+                  <div class="ring-inner"><strong id="scoreValue">0%</strong><small>OPEN</small></div>
+                </div>
+                <div class="verdict-copy">
+                  <p class="eyebrow" id="verdictEyebrow">STANDBY</p>
+                  <h2 id="verdictTitle">Drop a handle to begin.</h2>
+                  <p id="verdictSub">All 17 checkers are armed and waiting.</p>
+                  <div class="best" id="bestGrabs" hidden></div>
+                </div>
+                <dl class="tally">
+                  <div><dt>Open</dt><dd id="tallyOpen">—</dd></div>
+                  <div><dt>Taken</dt><dd id="tallyTaken">—</dd></div>
+                  <div><dt>Other</dt><dd id="tallyOther">—</dd></div>
+                  <div><dt>Checked</dt><dd id="tallyChecked">0/17</dd></div>
+                </dl>
+              </section>
+
+              <div class="board-head">
+                <div class="board-title">
+                  <p class="eyebrow">LIVE BOARD</p>
+                  <span id="resultCount">0 results</span>
+                </div>
+                <div class="filters" id="allFilters">
+                  <button class="filter is-active" type="button" data-filter="all">all</button>
+                  <button class="filter" type="button" data-filter="available">open</button>
+                  <button class="filter" type="button" data-filter="taken">taken</button>
+                  <button class="filter" type="button" data-filter="other">other</button>
+                </div>
+              </div>
+
+              <div class="target-grid" id="targetGrid"></div>
+              <p class="board-empty" id="boardEmpty" hidden>Nothing in this filter yet.</p>
+            </div>
+          </section>
+
+          <section class="view" id="viewGenerator" hidden>
+            <div class="view-scroll" id="genScroll">
+              <header class="gen-head">
+                <div class="gen-ident">
+                  <p class="eyebrow">CANDIDATE FORGE <span class="rule"></span> LOCAL GENERATOR</p>
+                  <h1>NAME <span class="outline">FORGE</span><span class="dot">.</span></h1>
+                  <p class="gen-sub">Rare handles, on tap. Forge a batch, stream candidates endlessly, then scan one platform or send a name across all 17.</p>
+                </div>
+                <div class="gen-meta">
+                  <div class="meta-box"><small>MODES</small><b>08</b></div>
+                  <div class="meta-box"><small>BATCH</small><b id="genBatchMeta">12</b></div>
+                  <div class="meta-box"><small>STATE</small><b id="genState">READY</b></div>
+                </div>
+              </header>
+
+              <section class="gen-controls">
+                <div class="gen-controls-top">
+                  <p class="eyebrow">MODE // <span id="genModeLabel">SMART 4C</span></p>
+                  <span class="source-tag">NO NETWORK</span>
+                </div>
+                <div class="gen-modes" id="genModes" role="group" aria-label="Name generation mode"></div>
+                <div class="gen-settings">
+                  <label class="gen-seed" id="genSeedWrap" hidden>
+                    <span>BASE WORDS</span>
+                    <input id="genSeed" type="text" maxlength="180" placeholder="hack, nova, zero" spellcheck="false" autocapitalize="none" autocomplete="off" />
+                  </label>
+                  <div class="gen-batch">
+                    <span>BATCH</span>
+                    <div class="gen-batch-options" id="genBatchOptions" role="group" aria-label="Batch size">
+                      <button type="button" data-count="12" class="is-active">12</button>
+                      <button type="button" data-count="24">24</button>
+                      <button type="button" data-count="48">48</button>
+                    </div>
+                  </div>
+                  <div class="gen-actions">
+                    <button class="ghost-btn" id="genStream" type="button">STREAM <span aria-hidden="true">∞</span></button>
+                    <button class="primary-btn" id="genGenerate" type="button">
+                      GENERATE
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13" /><path d="m13 6 6 6-6 6" /></svg>
+                    </button>
+                  </div>
+                </div>
+                <p class="gen-note" id="genNote">Smart 4C leans on uncommon consonants and clean shapes. Nothing is checked until you scan.</p>
+              </section>
+
+              <section class="gen-scan">
+                <div class="gen-scan-copy">
+                  <p class="eyebrow">BATCH SCAN</p>
+                  <label for="genTarget">Check every candidate on</label>
+                </div>
+                <div class="gen-scan-controls">
+                  <select id="genTarget" aria-label="Platform to scan"></select>
+                  <button class="action-btn action-primary" id="genScan" type="button">CHECK BATCH</button>
+                </div>
+                <p class="gen-scan-meta" id="genScanMeta">No candidates yet.</p>
+              </section>
+
+              <div class="gen-board-head">
+                <div class="board-title">
+                  <p class="eyebrow">CANDIDATES // <span id="genCount">0</span></p>
+                  <span id="genHint">Pick a mode and forge a batch.</span>
+                </div>
+                <div class="gen-board-actions">
+                  <button class="text-btn" id="genCopyAll" type="button">copy all</button>
+                  <button class="text-btn" id="genClear" type="button">clear</button>
+                </div>
+              </div>
+
+              <div class="gen-grid" id="genGrid"></div>
+              <p class="board-empty" id="genEmpty">No candidates yet. Pick a mode and hit generate.</p>
+            </div>
+          </section>
+
+          <section class="view" id="viewPlatform" hidden>
+            <div class="view-scroll" id="platformScroll">
+              <header class="pf-head">
+                <div class="pf-ident">
+                  <span class="pf-tile" id="pfTile"><img id="pfIcon" alt="" width="30" height="30" /></span>
+                  <div class="pf-title">
+                    <p class="eyebrow">TARGET // <span id="pfNum">01</span> <span class="rule"></span> <span id="pfGroup">GAMING</span></p>
+                    <h1 id="pfName">Roblox</h1>
+                    <p class="pf-hint" id="pfHint">Rules load with the checker.</p>
+                  </div>
+                </div>
+                <div class="pf-meta">
+                  <div class="meta-box"><small>WEIGHT</small><b id="pfWeight">—</b></div>
+                  <div class="meta-box"><small>STATUS</small><b id="pfQuickStatus">IDLE</b></div>
+                  <button class="ghost-btn" id="pfSiteBtn" type="button">
+                    OPEN PLATFORM
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7" /><path d="M8 7h9v9" /></svg>
+                  </button>
+                </div>
+              </header>
+
+              <div class="pf-layout">
+                <div class="pf-main">
+                  <section class="panel query-panel">
+                    <div class="panel-top">
+                      <p class="eyebrow">QUERY // <span id="pfQueryNum">01</span></p>
+                      <span class="source-tag" id="pfSourceTag">LIVE ENDPOINT</span>
+                    </div>
+                    <form class="pf-form" id="pfForm" autocomplete="off" novalidate>
+                      <label class="pf-label" for="pfInput">Check this handle on <b id="pfLabel">this platform</b></label>
+                      <div class="pf-field">
+                        <span class="pf-at" aria-hidden="true">@</span>
+                        <input
+                          id="pfInput"
+                          type="text"
+                          maxlength="64"
+                          placeholder="type a handle"
+                          spellcheck="false"
+                          autocapitalize="none"
+                          autocomplete="off"
+                        />
+                        <button class="primary-btn" id="pfBtn" type="submit">
+                          <span id="pfBtnLabel">CHECK</span>
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13" /><path d="m13 6 6 6-6 6" /></svg>
+                        </button>
+                      </div>
+                      <div class="pf-form-foot">
+                        <span class="pf-rule" id="pfRule">Platform rules</span>
+                        <label class="toggle">
+                          <input type="checkbox" id="pfFresh" />
+                          <span aria-hidden="true"></span>
+                          bypass cache
+                        </label>
+                      </div>
+                    </form>
+
+                    <div class="pf-result" id="pfResult">
+                      <div class="result-standby" id="pfStandby">
+                        <span class="standby-glyph" aria-hidden="true">S</span>
+                        <p id="pfStandbyText">No check yet. Enter a handle above.</p>
+                      </div>
+                      <div class="result-card" id="pfCard" hidden>
+                        <div class="rc-head">
+                          <span class="pill" id="pfPill"><i></i><span id="pfPillText">CHECKING</span></span>
+                          <span class="rc-latency" id="pfLatency">—</span>
+                        </div>
+                        <div class="rc-body">
+                          <img class="rc-avatar" id="pfAvatar" alt="" hidden />
+                          <div class="rc-copy">
+                            <h2 id="pfMessage">Checking…</h2>
+                            <p class="rc-sub" id="pfSub"></p>
+                          </div>
+                        </div>
+                        <div class="rc-actions">
+                          <button class="action-btn" id="pfCopy" type="button">COPY RESULT</button>
+                          <button class="action-btn action-primary" id="pfProfile" type="button" hidden>OPEN PROFILE</button>
+                          <span class="rc-source" id="pfSourceLine"></span>
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section class="panel console-panel">
+                    <div class="panel-top">
+                      <p class="eyebrow">ACTIVITY // <span id="pfHistoryCount">0</span></p>
+                      <button class="text-btn" id="pfClearHistory" type="button">clear</button>
+                    </div>
+                    <ul class="activity" id="pfHistory"></ul>
+                    <p class="empty-note" id="pfHistoryEmpty">No activity on this checker yet.</p>
+                  </section>
+                </div>
+
+                <aside class="pf-side">
+                  <section class="panel facts-panel">
+                    <div class="panel-top"><p class="eyebrow">DOSSIER</p></div>
+                    <dl class="facts">
+                      <div><dt>Group</dt><dd id="factGroup">—</dd></div>
+                      <div><dt>Rules</dt><dd id="factRule">—</dd></div>
+                      <div><dt>Lookup</dt><dd id="factSource">—</dd></div>
+                      <div><dt>Claim</dt><dd><button class="link-btn" id="factClaim" type="button">Open platform →</button></dd></div>
+                    </dl>
+                  </section>
+
+                  <section class="panel credit-panel">
+                    <span class="credit-jp" aria-hidden="true">製作者</span>
+                    <span class="credit-seal" aria-hidden="true">S</span>
+                    <p class="eyebrow">CREDITS // 01</p>
+                    <h2>BUILT BY<br /><span>sosuke</span></h2>
+                    <p>Concept, design, frontend, backend, testing. The whole thing.</p>
+                    <span class="credit-foot">SOSUKE CHECKER · v<span id="creditVersion">1.1.0</span></span>
+                  </section>
+
+                  <section class="panel tip-panel">
+                    <p class="eyebrow">FIELD NOTE</p>
+                    <p>Availability is not a reservation. A green result can disappear in seconds — move fast, and use the row refresh when a platform throttles.</p>
+                  </section>
+                </aside>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+
+      <footer class="statusbar">
+        <span class="status-left"><i id="statusDot"></i><span id="statusText">Ready — 17 checkers armed</span></span>
+        <span class="status-mid" id="statusMeta">no sweep yet</span>
+        <span class="status-right">built by <b>sosuke</b><span class="status-div">/</span><span id="statusPlatform">DESKTOP</span></span>
+      </footer>
+    </div>
+
+    <dialog class="manual" id="manualDialog" aria-labelledby="manualTitle">
+      <div class="manual-inner">
+        <button class="manual-close" id="closeManual" type="button" aria-label="Close the field manual">×</button>
+        <p class="eyebrow">FIELD MANUAL <span class="rule"></span> READ ME</p>
+        <h2 id="manualTitle">Point. Sweep. <span>Claim.</span></h2>
+        <p class="manual-lede">A native desk for checking one handle across 17 platforms, with a local name forge for fresh ideas. Everything runs on your machine; the checker talks straight to the platforms.</p>
+
+        <div class="manual-steps">
+          <div class="manual-step">
+            <span>01</span>
+            <div><h3>Pick a checker</h3><p>Every platform has its own tab in the left rail, or use <b>All checkers</b> for one sweep across all 17. Need a fresh idea? Open <b>Name forge</b>.</p></div>
+          </div>
+          <div class="manual-step">
+            <span>02</span>
+            <div><h3>Read the board</h3><p>Green is open, vermilion is taken, amber means the platform would not give a clean answer. Click any card to jump into that checker.</p></div>
+          </div>
+          <div class="manual-step">
+            <span>03</span>
+            <div><h3>Forge a handle</h3><p><b>Name forge</b> generates smart 4C, pure 3–4 letter, alphanumeric, pronounceable, leet, gaming and custom candidates. Scan a batch on one platform, or sweep any name across all 17.</p></div>
+          </div>
+          <div class="manual-step">
+            <span>04</span>
+            <div><h3>Claim it</h3><p>Open the platform from a result and register it before someone else does. Availability is not a reservation.</p></div>
+          </div>
+        </div>
+
+        <div class="manual-grid">
+          <div>
+            <p class="eyebrow">HONEST BY DESIGN</p>
+            <p>Blocked lookups become <b>UNKNOWN</b> or <b>LIMITED</b>, never a fake green. Results are cached for 90 seconds; use <b>bypass cache</b> for a fresh answer.</p>
+          </div>
+          <div>
+            <p class="eyebrow">NO ACCOUNTS</p>
+            <p>No logins, no API keys, no account creation, no server. Selection, history and inputs stay in this app's local storage.</p>
+          </div>
+        </div>
+
+        <div class="shortcuts">
+          <span><kbd>↵</kbd> run focused checker</span>
+          <span><kbd>⌘ K</kbd> jump to input</span>
+          <span><kbd>⌥ ↑↓</kbd> cycle tabs</span>
+          <span><kbd>esc</kbd> stop scan / close</span>
+        </div>
+
+        <div class="manual-credit">
+          <span class="credit-seal" aria-hidden="true">S</span>
+          <div><strong>Built by sosuke.</strong><p>Concept, design, frontend, backend, packaging, testing. Go claim something good.</p></div>
+          <span class="manual-version">v<span id="manualVersion">1.1.0</span></span>
+        </div>
+      </div>
+    </dialog>
+
+    <div class="toasts" id="toasts" aria-live="polite" aria-atomic="false"></div>
+  </body>
+</html>
